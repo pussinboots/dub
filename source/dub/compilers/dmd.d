@@ -21,7 +21,7 @@ import std.file;
 import std.process;
 import std.random;
 import std.typecons;
-
+import std.stdio;
 
 class DmdCompiler : Compiler {
 	private static immutable s_options = [
@@ -170,7 +170,8 @@ class DmdCompiler : Compiler {
 		logDiagnostic("%s %s", platform.compilerBinary, join(cast(string[])settings.dflags, " "));
 		auto compiler_pid = spawnProcess([platform.compilerBinary, "@"~res_file.toNativeString()]);
 		auto result = compiler_pid.wait();
-		enforce(result == 0, "DMD compile run failed with exit code "~to!string(result));
+		auto result_file = cast(char[])read(res_file.toNativeString())
+		enforce(result == 0, "DMD compile run failed with exit code "~to!string(result) ~" " ~ result_file);
 	}
 
 	void invokeLinker(in BuildSettings settings, in BuildPlatform platform, string[] objects)
