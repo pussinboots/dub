@@ -170,7 +170,7 @@ class DmdCompiler : Compiler {
 		logDiagnostic("%s %s", platform.compilerBinary, join(cast(string[])settings.dflags, " "));
 		auto compiler_pid = spawnProcess([platform.compilerBinary, "@"~res_file.toNativeString()]);
 		auto result = compiler_pid.wait();
-		auto result_file = cast(char[])read(res_file.toNativeString())
+		auto result_file = cast(char[])read(res_file.toNativeString());
 		enforce(result == 0, "DMD compile run failed with exit code "~to!string(result) ~" " ~ result_file);
 	}
 
